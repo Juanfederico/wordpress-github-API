@@ -19,6 +19,20 @@
 	<?php endif; ?>
 
 	<div class="entry-content">
+
+		<?php
+		$tipo_de_post = get_post_type();
+		echo "<br><b>Tipo de post: </b>" . $tipo_de_post ."<br>";
+		if($tipo_de_post=='criterio'){
+			echo "<b>String de búsqueda: </b>";
+			echo get_field('query') . "<br>";
+			echo "<b>Criterio de ordenamiento: </b>";
+			echo get_field_object('ordenamiento')['value']['label']; //Label del criterio
+			echo "<br>";
+			echo "<h3>A continuación se listan los 5 primeros repositorios que aparecen según los criterios establecidos:</h3>";
+		}
+		?>
+
 		<?php
 		the_content(
 			sprintf(

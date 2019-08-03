@@ -1,34 +1,14 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-	<title>API Github</title>
-</head>
-<body>
-<!-- Scripts -->
-
-	Ingresa la query que queres buscar en github:
-	<form action="" method="get">
-		<label>Query</label>
-		<input type="text" name="query">
-		<br>
-		<button type="submit">Enviar</button>
-	</form>
-
-<!-- Content -->
-
-</body>
-</html>
-
 <?php 
-	if(isset($_GET["query"])){
+	if(isset(get_field('query'))){
 
-		$query = $_GET["query"];
-		$json_string;
+		$query = get_field('query');
+		$ordenamiento = get_field('ordenamiento');
+
+		$url = "";
 
 		$ch = curl_init();
 	    curl_setopt_array($ch, [
-	        CURLOPT_URL => "https://api.github.com/search/repositories?q=".$query."&sort=stars",
+	        CURLOPT_URL => "https://api.github.com/search/repositories?q=".$query."&sort=".$ordenamiento,
 	        CURLOPT_HTTPHEADER => [
 	            "Accept: application/vnd.github.mercy-preview+json",
 	            "Content-Type: application/json",

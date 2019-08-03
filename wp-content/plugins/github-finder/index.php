@@ -11,19 +11,28 @@
 
 	function githubFinder($atts){
 
-		if($_SERVER['REQUEST_METHOD'] == "GET"){
-			echo "hola mundo";
-		}
+		$dataSalida = "<br>";
+		//Variables que definen el criterio de busqueda de github
+		$query = get_field('query');
+		$ordenamiento = get_field('ordenamiento')['value']; //Valor del select
 
-		$args = shortcode_atts( array(
-			'facebook' => 'http://www.facebook.com', //Valores por defecto
-			'twitter' => 'http://www.twitter.com', //Valores por defecto
-			'instagram' => 'http://www.instagram.com' //Valores por defecto
-		), $atts); //Captura los atributos del shortcode y recibe parametros, en forma de arrays
+		$url = "https://api.github.com/search/repositories?q=".$query."&sort=".$ordenamiento."&order=desc";
 
-		return "probando";
+    	$result = wp_remote_get( $url );
+    	$result = json_decode($result['body'], true);
 
+		foreach (array_slice($result['items'], 0, 5) as $items){ //Primeros 5 elementos
+	    	$dataSalida .= "<b>Nombre del repositorio: </b>" . $items["name"] . "<br>";
+	    	$dataSalida .= "<b>Cantidad de estrellas: </b>" . $items["stargazers_count"] . "<br>";
+	    	$dataSalida .= "<b>Link al repositorio: </b> 
+	    		<a href='".$items['html_url']."'>" . $items["html_url"] . "</a><br>";
+	    	$dataSalida .= "<br><br>";
+	    }
+
+    	return $dataSalida;
 	}
+
+	
 
 	add_shortcode("github-finder", "githubFinder");
 

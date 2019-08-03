@@ -321,3 +321,48 @@ require get_template_directory() . '/inc/template-tags.php';
  * Customizer additions.
  */
 require get_template_directory() . '/inc/customizer.php';
+
+
+/* Criterior de busqueda para github */
+
+function criterio_post_type(){
+		//definiendo los nombres de las etiquetas de nombre
+		$labels = array(
+		'name'                  => __( 'Criterios de búsqueda', 'testtheme' ),
+		'singular_name'         => __( 'criterios', 'testtheme' ),
+		'menu_name'             => __( 'Criterio', 'testtheme' ),
+		'name_admin_bar'        => __( 'Criterio', 'testtheme' ),
+		'archives'              => __( 'Archivos de criterios', 'testtheme' ),
+		'all_items'             => __( 'Todos los criterios', 'testtheme' ),
+		'add_new_item'          => __( 'Agregar nuevo criterio', 'testtheme' ),
+		'add_new'               => __( 'Agregar criterio', 'testtheme' ),
+		'new_item'              => __( 'Nuevo criterio', 'testtheme' ),
+		'edit_item'             => __( 'Editar criterio', 'testtheme' ),
+		'update_item'           => __( 'Actualizar criterio', 'testtheme' ),
+		'view_item'             => __( 'Ver criterio', 'testtheme' ),
+		'view_items'            => __( 'Ver criterio', 'testtheme' ),
+		'search_items'          => __( 'Buscar criterios', 'testtheme' ),
+		'not_found'             => __( 'No encontrado', 'testtheme' ),
+		'featured_image'        => __( 'Imagen Destacada', 'testtheme' ),
+		'set_featured_image'    => __( 'Colocar imagen destacada', 'testtheme' ),
+		'remove_featured_image' => __( 'Quitar imagen destacada', 'testtheme' ),
+		'use_featured_image'    => __( 'Usar como imagen destacada', 'testtheme' ),
+		'insert_into_item'      => __( 'Insertar en el criterio', 'testtheme' ),
+		'uploaded_to_this_item' => __( 'Uploaded to this item', 'testtheme' ),
+		'items_list'            => __( 'Lista de criterios', 'testtheme' )
+		);
+
+
+	$args = array(
+		'label'                 => __( 'Criterio', 'juanfederico' ),
+		'description'           => __( 'Lista de criterios', 'juanfederico' ),
+		'labels'                => $labels,
+		'supports'              => array( 'title', 'thumbnail','editor' ),
+		'taxonomies'            => array( 'Dominios','Hosting' ),
+		'public'                => true,
+		'menu_position'         => 5,
+		'has_archive'           => 'criterios'
+	);
+	register_post_type( 'criterio', $args );
+}
+add_action('init', 'criterio_post_type');
