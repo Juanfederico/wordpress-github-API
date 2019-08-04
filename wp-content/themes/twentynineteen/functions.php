@@ -366,3 +366,34 @@ function criterio_post_type(){
 	register_post_type( 'criterio', $args );
 }
 add_action('init', 'criterio_post_type');
+
+function crear_menu() {
+  add_menu_page('Github finder', 'Github finder', 'manage_options', 'ghf_mantenimiento', 'output_menu');
+  function output_menu() {
+  echo "Seteada?" . has_action("ghf-activado");
+  echo "<form>";
+  echo "<input type='hidden' name='mantenimiento' value='1'>";
+  echo "<h1>Activar/Desactivar funcionalidad del GitHub finder</h1>";
+  echo "<p>Esta prueba nos permite aprender a crear menús en el admin de WordPress.</p>";
+  if(has_action("ghf-activado")){
+  echo "<input type='checkbox' name='estado' value='1' checked onChange='this.form.submit()''>Modo mantenimiento</input>";
+  }
+  else echo "<input type='checkbox' name='estado' value='0' unchecked onChange='this.form.submit()''>Modo mantenimiento</input>";
+
+  echo "</form>";
+
+  if(isset($_GET["estado"])){
+  	add_action("ghf-activado", "ghf-activado");
+  }
+  
+  }
+
+  //add_action("ghf-activado", "ghf-activado");
+  //remove_action("ghf-activado", "ghf-activado");
+
+  if(isset($_GET["estado"])){
+  	add_action("ghf-activado", "ghf-activado");
+  }
+  	//header('Location: ../wp-admin');
+}
+add_action("admin_menu", "crear_menu");
