@@ -367,33 +367,37 @@ function criterio_post_type(){
 }
 add_action('init', 'criterio_post_type');
 
-function crear_menu() {
+/*function crear_menu() {
   add_menu_page('Github finder', 'Github finder', 'manage_options', 'ghf_mantenimiento', 'output_menu');
-  function output_menu() {
-  echo "Seteada?" . has_action("ghf-activado");
-  echo "<form>";
-  echo "<input type='hidden' name='mantenimiento' value='1'>";
-  echo "<h1>Activar/Desactivar funcionalidad del GitHub finder</h1>";
-  echo "<p>Esta prueba nos permite aprender a crear menús en el admin de WordPress.</p>";
-  if(has_action("ghf-activado")){
-  echo "<input type='checkbox' name='estado' value='1' checked onChange='this.form.submit()''>Modo mantenimiento</input>";
-  }
-  else echo "<input type='checkbox' name='estado' value='0' unchecked onChange='this.form.submit()''>Modo mantenimiento</input>";
-
-  echo "</form>";
-
-  if(isset($_GET["estado"])){
-  	add_action("ghf-activado", "ghf-activado");
-  }
-  
-  }
-
-  //add_action("ghf-activado", "ghf-activado");
-  //remove_action("ghf-activado", "ghf-activado");
-
-  if(isset($_GET["estado"])){
-  	add_action("ghf-activado", "ghf-activado");
-  }
-  	//header('Location: ../wp-admin');
+	  function output_menu() {
+	  echo "<form action=''>";
+	  echo "<h1>Activar/Desactivar funcionalidad del GitHub finder</h1>";
+	  echo "<p>Esta funcionalidad nos permite desactivar temporalmente el plugin de github.</p>";
+	  if(get_option('estadoghf')==0){
+	  	echo "<input type='hidden' name='mantenimiento' value='1'>";
+	  	echo "<input type='checkbox' name='estado' value='1' unchecked onChange='this.form.submit()''>Modo mantenimiento</input>";
+	  }
+	  else{
+	  	echo "<input type='hidden' name='mantenimiento' value='0'>";
+	  	echo "<input type='checkbox' name='estado' value='0' checked onChange='this.form.submit()''>Modo mantenimiento</input>";
+	  }
+	  echo "</form>";
+	  }
 }
 add_action("admin_menu", "crear_menu");
+
+function insertEstado($mantenimiento){
+	echo "entre y mi variable vale: " . $mantenimiento;
+	if(isset($mantenimiento)){
+		if(get_option('estadoghf')) update_option('estadoghf', $mantenimiento);
+		else add_option('estadoghf', $mantenimiento);
+	}
+	return "termino";
+	//header('Location: ../wp-admin');
+}
+add_filter( 'insert-estado', 'insertEstado' );
+//remove_filter( 'insert-estado', 'insertEstado');
+
+//header('Location: ../wp-admin');
+
+//update_option('estado', 1);*/

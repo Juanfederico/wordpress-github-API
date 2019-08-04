@@ -1,5 +1,4 @@
 <?php 
-
 	/*
 		Plugin Name: Buscador github
 		Plugin URI: http://www.google.com.ar
@@ -67,11 +66,46 @@
 	    	$dataSalida .= "</div></div>";
 	    }
 
-	    echo "Hay?" . has_action("admin_menu");
+	    if(get_option('estadoghf')==1) return "Disculpe, estamos mejorando el plugin.";
+    	else return $dataSalida;
+	}
 
-    	return $dataSalida;
+	function githubFinder_disabled($atts){
+		return "Disculpe, estamos mejorando el plugin.";
 	}
 
 	add_shortcode("github-finder", "githubFinder");
+
+	function crear_menu() {
+  	add_menu_page('Github finder', 'Github finder', 'manage_options', 'ghf_mantenimiento', 'output_menu');
+	  function output_menu() {
+	  echo "<form action=''>";
+	  echo "<h1>Activar/Desactivar funcionalidad del GitHub finder</h1>";
+	  echo "<p>Esta funcionalidad nos permite desactivar temporalmente el plugin de github.</p>";
+	  if(get_option('estadoghf')==0){
+	  	echo "<input type='hidden' name='mantenimiento' value='1'>";
+	  	echo "<input type='checkbox' name='estado' value='1' unchecked onChange='this.form.submit()''>Modo mantenimiento</input>";
+	  }
+	  else{
+	  	echo "<input type='hidden' name='mantenimiento' value='0'>";
+	  	echo "<input type='checkbox' name='estado' value='0' checked onChange='this.form.submit()''>Modo mantenimiento</input>";
+	  }
+	  echo "</form>";
+	  }
+
+	  if(isset($_GET['mantenimiento'])){
+		  if($_GET['mantenimiento']==1){
+			  if(get_option('estadoghf')==0) update_option('estadoghf', 1);
+			  if(get_option('estadoghf')==false) add_option('estadoghf', 1); //Si no existe
+		  }
+		  else{ //Si mantenimiento vale 0, es decir, hay que desactivar el plugin
+			  if(get_option('estadoghf')==1) update_option('estadoghf', 0);
+			  if(get_option('estadoghf')==false) add_option('estadoghf', 0); //Si no existe
+	  	  }
+
+	  	  header('Location: ../wp-admin');
+	  }
+	}
+	add_action("admin_menu", "crear_menu");
 
 ?>
