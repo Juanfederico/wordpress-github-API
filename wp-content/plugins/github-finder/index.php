@@ -9,8 +9,8 @@
 	*/
 
 	//Configurando estructura de los enlaces permanentes para que el plugin use la ruta nombrewp/criterios
-	if(strcmp(get_option('permalink_structure'),'/%category%/%post_id%')==0) 
-		update_option('permalink_structure', '/%category%/%post_id%');
+	if(strcmp(get_option('permalink_structure'),'/%category%/%postname%')!=0) 
+		update_option('permalink_structure', '/%category%/%postname%');
 
 	//Agrego estilos para utilizarlos en los resultados
 	//Incluye Bootstrap, , font-awesome, jQuery, ClipboardJS
@@ -139,7 +139,7 @@
 		'edit_item'             => __( 'Editar criterio', 'testtheme' ),
 		'update_item'           => __( 'Actualizar criterio', 'testtheme' ),
 		'view_item'             => __( 'Ver criterio', 'testtheme' ),
-		'view_items'            => __( 'Ver criterio', 'testtheme' ),
+		'view_items'            => __( 'Ver criterios', 'testtheme' ),
 		'search_items'          => __( 'Buscar criterios', 'testtheme' ),
 		'not_found'             => __( 'No encontrado', 'testtheme' ),
 		'featured_image'        => __( 'Imagen Destacada', 'testtheme' ),
@@ -156,7 +156,7 @@
 		'description'           => __( 'Lista de criterios', 'juanfederico' ),
 		'labels'                => $labels,
 		'supports'              => array( 'title', 'thumbnail','editor' ),
-		'taxonomies'            => array( 'Dominios','Hosting' ),
+		'taxonomies'            => array( 'category','post_type' ),
 		'public'                => true,
 		'menu_position'         => 5,
 		'has_archive'           => 'criterios'
