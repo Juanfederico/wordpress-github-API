@@ -15,4 +15,4 @@ Creación de un plugin que consume la API de GitHub y filtra búsquedas según l
 - After that you can access to **"yourwordpressname/criterios"** to see the list of links with the created criteria.
 - Select one link and see the results of the GitHub search with the specific data.
 - If you want to switch your plugin to maintenance mode access to the option menu on your admin panel and activate the checkbox. If the checkbox is activated, the [github-finder] shortcode will only show a message.
-- PS: You can access to a specific criteria on **yourwordpressname/criterio/id** if you know it.
+- PS: You can access to a specific criteria on **yourwordpressname/criterio/name** if you know it.
