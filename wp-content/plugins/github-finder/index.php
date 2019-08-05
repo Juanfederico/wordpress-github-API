@@ -2,17 +2,18 @@
 	/*
 		Plugin Name: Buscador github
 		Plugin URI: http://www.google.com.ar
-		Description: Plugin utilizado para la busqueda de repositorios en github, según un tipo de criterio determinado (acceder a wpnombre/criterios para ver todos)
+		Description: Plugin utilizado para la busqueda de repositorios en github, según un tipo de criterio determinado (acceder a wpnombre/criterios para ver todos los links referidos a los criterios)
 		Author: Juan Federico
 		Version: 1.0.0
-		Author URI: http://www.juanfederico.com.ar
+		Author URI: https://github.com/Juanfederico
 	*/
 
 	//Configurando estructura de los enlaces permanentes para que el plugin use la ruta nombrewp/criterios
-	if(strcmp(get_option('permalink_structure')!='/%category%/%post_id%')
+	if(strcmp(get_option('permalink_structure'),'/%category%/%post_id%')==0) 
 		update_option('permalink_structure', '/%category%/%post_id%');
 
-	//Agrego estilos (en este caso de bootstrap y font-awesome) para utilizarlos en los resultados
+	//Agrego estilos para utilizarlos en los resultados
+	//Incluye Bootstrap, , font-awesome, jQuery, ClipboardJS
 	function register_my_scripts(){
 	    wp_enqueue_style( 'bootstrap-css1', plugins_url( '/css/bootstrap.css' , __FILE__ ) );
 	    wp_enqueue_style( 'bootstrap-css2', plugins_url( '/css/bootstrap-theme.css' , __FILE__ ) );
@@ -21,27 +22,40 @@
 	    wp_enqueue_style( 'fa', plugins_url( '/css/all.css' , __FILE__ ) );
 	    wp_enqueue_style( 'fonts1', plugins_url( '/webfonts/fa-solid-900.woff' , __FILE__ ) );
 	    wp_enqueue_style( 'fonts2', plugins_url( '/webfonts/fa-solid-900.woff2' , __FILE__ ) );
-	    wp_enqueue_script( 'jquerymin', plugins_url( '/js/jquery.min.js' , __FILE__ ) );
-	    wp_enqueue_script( 'bsmin', plugins_url( '/js/bootstrap.js' , __FILE__ ) );
-		wp_enqueue_script( 'cbmin', plugins_url( '/dist/clipboard.min.js' , __FILE__ ) );
-		wp_enqueue_script( 'funcionalidad', plugins_url( '/js/script.js' , __FILE__ ) );
+	    wp_enqueue_script( 'jq', plugins_url( '/js/jquery.min.js' , __FILE__ ) );
+		wp_enqueue_script( 'clipboard-js', plugins_url( '/dist/clipboard.min.js' , __FILE__ ) );
+		wp_enqueue_script( 'bootstrap-js', plugins_url( '/js/bootstrap.js' , __FILE__ ) );
+		wp_enqueue_script( 'funciones', plugins_url( '/js/funciones.js' , __FILE__ ) );
 	}
 	add_action('wp_enqueue_scripts','register_my_scripts');
 
 	function githubFinder($atts){
+		//Inicio del shortcode con los detalles del criterio establecido por el administrador
+		$tipo_de_post = get_post_type();
+		echo "<br><b>Tipo de post: </b>" . $tipo_de_post ."<br>";
+		if($tipo_de_post=='criterio'){
+			echo "<b>String de búsqueda: </b>";
+			echo get_field('query') . "<br>";
+			echo "<b>Criterio de ordenamiento: </b>";
+			echo get_field_object('ordenamiento')['value']['label']; //Label del criterio
+			echo "<br>";
+			echo "<h3>A continuación se listan los 5 primeros repositorios que aparecen según los criterios establecidos:</h3>";
+		}
 
-		$dataSalida = "<br>";
+		//Comienza a obtenerse la data especifica de la busqueda mediante HTTP GET. El metodo de obtención que utilizamos es el que nos provee wordpress (wp_remote_get))
+		$dataSalida = "";
 		//Variables que definen el criterio de busqueda de GitHub
 		$query = get_field('query'); //Valor del string para la propiedad 'q'
 		$ordenamiento = get_field('ordenamiento')['value']; //Valor del select para propiedad 'sort'
 
 		$url = "https://api.github.com/search/repositories?q=".$query."&sort=".$ordenamiento."&order=desc";
-		$urlClipboard = "https://github.com/search?q=".$query."&sort=".$ordenamiento."&order=desc";
+		$urlClipboard = "https://github.com/search?o=desc&q=".$query."&s=".$ordenamiento."&type=Repositories";
 
+		//Input con boton para copiar la url original a la busqueda en github
     	echo '<div class="input-group">';
     	echo '<input id="linkgit" type="text" value="'.$urlClipboard.'" class="form-control" style="font-size: 16px;">';
 		echo '<span class="input-group-btn">';
-		echo '<button id="copia" class="btn btn-default" data-clipboard-target="#linkgit" type="button">Copiar</button>';
+		echo '<button id="copiar" class="btn btn-default" data-clipboard-target="#linkgit" type="button">Copiar</button>';
 		echo '</span>';
 		echo '</div>';
 
@@ -103,12 +117,12 @@
 			  if(get_option('estadoghf')==false) add_option('estadoghf', 0); //Si no existe
 	  	  }
 
-	  	  header('Location: ../wp-admin');
+	  	  header('Location: ../wp-admin'); //Redireccion a la vista principal del backoffice
 	  }
 	}
 	add_action("admin_menu", "menu_gitHubFinder");
 
-	/* Criterio de busqueda para github */
+	/* Criterio de busqueda para github (Custom post type) */
 
 	function criterio_post_type(){
 		//definiendo los nombres de las etiquetas de nombre
