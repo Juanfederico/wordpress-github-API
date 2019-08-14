@@ -1,0 +1,71 @@
+[
+    {
+        "key": "group_5d44cf4ed9b98",
+        "title": "Agregar criterios de búsqueda en GitHub",
+        "fields": [
+            {
+                "key": "field_5d44cfcb8d6aa",
+                "label": "String de búsqueda",
+                "name": "query",
+                "type": "text",
+                "instructions": "",
+                "required": 1,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "placeholder": "Ej: Ubuntu",
+                "prepend": "",
+                "append": "",
+                "maxlength": ""
+            },
+            {
+                "key": "field_5d44d0518d6ab",
+                "label": "Criterio de ordenamiento",
+                "name": "ordenamiento",
+                "type": "select",
+                "instructions": "",
+                "required": 1,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "choices": {
+                    "stars": "Cantidad de estrellas",
+                    "forks": "Cantidad de forks",
+                    "help-wanted-issues": "Help wanted issues existentes",
+                    "updated": "Actualizados recientemente"
+                },
+                "default_value": [],
+                "allow_null": 0,
+                "multiple": 0,
+                "ui": 0,
+                "return_format": "array",
+                "ajax": 0,
+                "placeholder": ""
+            }
+        ],
+        "location": [
+            [
+                {
+                    "param": "post_type",
+                    "operator": "==",
+                    "value": "criterio"
+                }
+            ]
+        ],
+        "menu_order": 0,
+        "position": "acf_after_title",
+        "style": "default",
+        "label_placement": "top",
+        "instruction_placement": "label",
+        "hide_on_screen": "",
+        "active": true,
+        "description": "Genera un criterio de busqueda con los datos necesarios"
+    }
+]
